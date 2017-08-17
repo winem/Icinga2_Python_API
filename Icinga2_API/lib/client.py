@@ -39,6 +39,7 @@ class Icinga2APIClient(object):
         """
 
         ret = self.connection.get(self.url + self.URLCHOICES[type], verify=False)
+        ret.raise_for_status()
         return json.loads(ret.text)
 
     def delete_Data(self, type, name):
@@ -47,6 +48,7 @@ class Icinga2APIClient(object):
         """
 
         ret = self.connection.delete(self.url + self.URLCHOICES[type] + name, verify=False)
+        ret.raise_for_status()
         return json.loads(ret.text)
 
     def put_Data(self, type, data):
@@ -57,6 +59,7 @@ class Icinga2APIClient(object):
         :param data: Data Dictionary that is used to add values to Icinga2
         """
         ret = self.connection.put(self.url + self.URLCHOICES[type] + data['name'], data=json.dumps(data), verify=False)
+        ret.raise_for_status()
 
     def post_Data(self, type, data):
         """
@@ -65,4 +68,5 @@ class Icinga2APIClient(object):
         :param data: Data Dictionary that is used to query the Icinga2API
         """
         ret = self.connection.post(self.url + self.URLCHOICES[type], headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
+        ret.raise_for_status()
         return json.loads(ret.text)
