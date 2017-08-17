@@ -12,7 +12,7 @@ class Host():
         if config:
             self.config = config
 
-        self.filter = self.client.URLCHOICES['host']
+        self.filter = 'host'
 
     def add(self, hostdata=None):
         """
@@ -30,13 +30,16 @@ class Host():
         """
         To be filled
         """
-        host_filter = {
-            "filter": "host.name == name",
-            "filter_vars": {
-                "name": hostname
+        if hostname is not None:
+            host_filter = {
+                "filter": "host.name == name",
+                "filter_vars": {
+                    "name": hostname
+                }
             }
-        }
-        return self.client.get_Data(self.filter, host_filter)
+            return self.client.post_Data(self.filter, host_filter)
+        else:
+            return self.client.get_Data(self.filter)
 
     def exists(self, hostname=None):
         """

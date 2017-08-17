@@ -33,15 +33,18 @@ class Icinga2APIClient(object):
 
         self.connection.auth = (username, password)
 
-    def post_Data(self, data):
+    def get_Data(self, type):
         """
-        Post Data to icinga2
+        Get Data from icinga2
         """
-        self.connection.post(self.url, data=data)
 
-    def get_Data(self, type, data):
+        print self.url + self.URLCHOICES[type]
+        ret = self.connection.get(self.url + self.URLCHOICES[type], verify=False)
+        return ret.text
+
+    def post_Data(self, type, data):
         """
-        Get method
+        POST method
         :param type: type of uri to attach to url
         :param data: Data Dictionary that is used to query the Icinga2API
         """

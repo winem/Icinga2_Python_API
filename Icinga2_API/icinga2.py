@@ -24,4 +24,4 @@ class Icinga2API(object):
 
 if __name__ == '__main__':
     api = Icinga2API(username="root", password="1a15f273bf8c908d", url="https://icinga.mw-krz-swd.de:5665")
-    print api.host.list("icinga.mw-krz-swd.de")
+    print api.host.list()
