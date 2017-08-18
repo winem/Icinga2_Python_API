@@ -1,3 +1,5 @@
+import logging
+from pprint import pformat
 class Host():
     """
     Class that contains all informations about Hosts and corresponding funtions
@@ -49,6 +51,7 @@ class Host():
         else:
             validate_hostdata(hostdata)
 
+        logging.debug("Adding host with the following data: {}".format(pformat(hostdata)))
         self.client.put_Data(self.filter, hostdata)
 
 
@@ -61,6 +64,7 @@ class Host():
         if not hostname:
             raise ValueError("Hostname not set")
         else:
+            logging.debug("Deleting Host with name: {}".format(hostname))
             self.client.delete_Data(self.filter, hostname)
 
     def list(self, hostname=None):
@@ -78,18 +82,20 @@ class Host():
                     "name": hostname
                 }
             }
-            ret = self.client.post_Data(self.filter, host_filter)
         else:
             host_filter = {
                 "attrs": ["name"]
             }
-            ret = self.client.post_Data(self.filter, host_filter)
+
+        logging.debug("Listing all Hosts that match: {}".format(pformat(host_filter)))
+        ret = self.client.post_Data(self.filter, host_filter)
 
         return_list = []
 
         for attrs in ret['results']:
             return_list.append(attrs['name'])
 
+        logging.debug("Finished list of all matches: {}".format(pformat(return_list)))
         return return_list
 
 
@@ -134,13 +140,21 @@ class Host():
         else:
             payload['attrs'] = ['name', 'state', 'acknowledgement', 'downtime_depth', 'last_check']
 
+        logging.debug("Attrs set to: {}".format(pformat(payload['attrs'])))
+
         if _filter:
             payload['filter'] = _filter
+            logging.debug("Filter set to: {}".format(pformat(payload['filter'])))
 
         if joins:
             payload['joins'] = joins
+            logging.debug("Joins set to: {}".format(pformat(payload['joins'])))
+
+        logging.debug("Payload: {}".format(pformat(payload)))
 
         result = self.client.post_Data(self.filter, payload)
+
+        logging.debug("Result: {}".format(result))
 
         if result['results']:
             self.problems_down = problem_count(result['results'], self.HOST_STATUS['DOWN'])
@@ -162,7 +176,7 @@ class Host():
 
     def problem_count(self):
         """
-        Count the host with problems that are neither acknowledged or have a downtime
+        Return the count of hosts with problems that are neither acknowledged or have a downtime
         """
         count = 0
 
@@ -170,6 +184,7 @@ class Host():
 
         for data in host_data:
             if data['attrs']['downtime_depth'] == 0 and data['attrs']['acknowledgement'] == 0 and data['attrs']['state'] != 0:
+                logging.debug("Found match for Host: {}".format(pformat(data['name'])))
                 count += 1
 
         return count
@@ -186,6 +201,7 @@ class Host():
         for host in host_data:
             if host['attrs']['state'] != 0:
                 host_problems[host['name']] = self.host_severity(host['attrs'])
+                logging.debug("Calculated Severity for {} is {}".format(host['name'], host_problems[host['name']]))
 
         if len(host_problems) != 0:
             host_problems_severity = sorted(host_problems, reverse=True)
@@ -211,6 +227,8 @@ class Host():
 
         severity = 0
 
+        logging.debug("calculating severity for {}".format(pformat(attrs['name'])))
+
         if attrs['acknowledgement'] != 0:
             severity += 2
         elif attrs['downtime_depth'] > 0:
@@ -231,4 +249,5 @@ class Host():
             else:
                 severity += 256
 
+        logging.debug("calculated severity for {} is {}".format(pformat(attrs['name']), severity))
         return severity

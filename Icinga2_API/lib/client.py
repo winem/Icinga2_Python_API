@@ -1,6 +1,7 @@
 import json
 import urllib3
 from requests import Session
+import logging
 
 class Icinga2APIClient(object):
     """
