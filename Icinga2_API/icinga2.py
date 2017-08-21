@@ -1,6 +1,7 @@
 from lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
-import logging
 from pprint import pprint
+import logging
+import sys
 
 class Icinga2API(object):
     """
@@ -34,4 +35,4 @@ class Icinga2API(object):
 
 if __name__ == '__main__':
     api = Icinga2API(username="root", password="1a15f273bf8c908d", url="https://icinga.mw-krz-swd.de:5665", debug=True)
-    pprint(api.host.problem_list())
+    pprint(api.host.objects())

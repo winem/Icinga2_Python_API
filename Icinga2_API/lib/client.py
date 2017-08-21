@@ -1,7 +1,7 @@
-import json
-import urllib3
 from requests import Session
+import urllib3
 import logging
+import json
 
 class Icinga2APIClient(object):
     """
@@ -28,46 +28,46 @@ class Icinga2APIClient(object):
 
     def setconfig(self, username=None, password=None, url=None):
         if url is not None:
-            self.url = url
+            self.baseurl = url
         else:
             raise ValueError("No URL set")
 
         self.connection.auth = (username, password)
 
-    def get_Data(self, type):
+    def get_Data(self, url):
         """
         Get Data from icinga2
         """
 
-        ret = self.connection.get(self.url + self.URLCHOICES[type], verify=False)
+        ret = self.connection.get(self.baseurl + url, verify=False)
         ret.raise_for_status()
         return json.loads(ret.text)
 
-    def delete_Data(self, type, name):
+    def delete_Data(self, url):
         """
         Get Data from icinga2
         """
 
-        ret = self.connection.delete(self.url + self.URLCHOICES[type] + name, verify=False)
+        ret = self.connection.delete(self.baseurl + url, verify=False)
         ret.raise_for_status()
         return json.loads(ret.text)
 
-    def put_Data(self, type, data):
+    def put_Data(self, url):
         """
         Put Data into Icinga2 via the API
 
         :param type: type of uri to attach to url
         :param data: Data Dictionary that is used to add values to Icinga2
         """
-        ret = self.connection.put(self.url + self.URLCHOICES[type] + data['name'], data=json.dumps(data), verify=False)
+        ret = self.connection.put(self.baseurl + url, data=json.dumps(data), verify=False)
         ret.raise_for_status()
 
-    def post_Data(self, type, data):
+    def post_Data(self, url, data):
         """
         POST method
         :param type: type of uri to attach to url
         :param data: Data Dictionary that is used to query the Icinga2API
         """
-        ret = self.connection.post(self.url + self.URLCHOICES[type], headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
+        ret = self.connection.post(self.baseurl + url, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
         ret.raise_for_status()
         return json.loads(ret.text)

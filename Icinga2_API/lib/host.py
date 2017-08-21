@@ -1,5 +1,5 @@
-import logging
 from pprint import pformat
+import logging
 class Host():
     """
     Class that contains all informations about Hosts and corresponding funtions
@@ -52,7 +52,7 @@ class Host():
             validate_hostdata(hostdata)
 
         logging.debug("Adding host with the following data: {}".format(pformat(hostdata)))
-        self.client.put_Data(self.filter, hostdata)
+        self.client.put_Data(self.client.URLCHOICES[self.filter] + hostdata['attrs']['name'], hostdata)
 
 
     def delete(self, hostname=None):
@@ -65,7 +65,7 @@ class Host():
             raise ValueError("Hostname not set")
         else:
             logging.debug("Deleting Host with name: {}".format(hostname))
-            self.client.delete_Data(self.filter, hostname)
+            self.client.delete_Data(self.client.URLCHOICES[self.filter] + hostname)
 
     def list(self, hostname=None):
         """
@@ -88,7 +88,7 @@ class Host():
             }
 
         logging.debug("Listing all Hosts that match: {}".format(pformat(host_filter)))
-        ret = self.client.post_Data(self.filter, host_filter)
+        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], host_filter)
 
         return_list = []
 
@@ -152,7 +152,7 @@ class Host():
 
         logging.debug("Payload: {}".format(pformat(payload)))
 
-        result = self.client.post_Data(self.filter, payload)
+        result = self.client.post_Data(self.client.URLCHOICES[self.filter], payload)
 
         logging.debug("Result: {}".format(result))
 
