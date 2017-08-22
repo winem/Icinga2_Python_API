@@ -125,20 +125,16 @@ class Service():
         """
         Experimental
         """
-        _filter = "service.name == {}".format(servicename)
-        joins = []
 
         if hostname:
-            joins.append("host.name")
-            _filter +=" && host.name == {}".format(hostname)
-
-        self.log.debug("Payload: {};{}".format(_filter, joins))
-
-        ret = self.objects()
-        if ret:
-            return ret
+            ret = self.list(servicename=servicename, hostname=hostname)
         else:
-            return ret
+            ret = self.list(servicename=servicename)
+
+        if ret:
+            return True
+        else:
+            return False
 
     def objects(self, attrs=None, _filter=None, joins=None, process=True):
         """
@@ -158,7 +154,15 @@ class Service():
                     unhandled_list.append(attrs['attrs']['__name'])
             return unhandled_list
 
-        def problem_count(data, value):
+        def handled(data, value):
+            handled_list = []
+
+            for attrs in data:
+                if attrs['attrs']['state'] == value and attrs['attrs']['acknowledgement'] != 0.0 and attrs['attrs']['downtime_depth'] != 0.0:
+                    handled_list.append(attrs['attrs']['__name'])
+            return handled_list
+
+        def count(data, value):
             problems = 0
 
             for attrs in data:
@@ -188,81 +192,62 @@ class Service():
         self.log.debug("Result: {}".format(result))
 
         if process:
+            self.warning_handled = handled(result['results'], self.SERVICE_STATUS["WARNING"])
+            self.critical_handled = handled(result['results'], self.SERVICE_STATUS["CRITICAL"])
+            self.unknown_handled = handled(result['results'], self.SERVICE_STATUS["UNKNOWN"])
             self.unhandled = unhandled(result['results'])
-            self.down = problem_count(result['results'], self.SERVICE_STATUS['WARNING'])
-            self.critical = problem_count(result['results'], self.SERVICE_STATUS['CRITICAL'])
-            self.unknown = problem_count(result['results'], self.SERVICE_STATUS['UNKNOWN'])
+            self.ok = count(result['results'], self.SERVICE_STATUS['OK'])
+            self.warning = count(result['results'], self.SERVICE_STATUS['WARNING'])
+            self.critical = count(result['results'], self.SERVICE_STATUS['CRITICAL'])
+            self.unknown = count(result['results'], self.SERVICE_STATUS['UNKNOWN'])
 
         return result['results']
 
-    def adjusted(self, arg):
+    def problem_count(self):
         """
-        To be filled
+        Returns the ammount of services that are either CRITICAL, WARNING or UNKNOWN
         """
-        pass
+        return self.warning + self.critical + self.unknown
 
-    def problem_count(self, arg):
+    def problem_handled_count(self):
         """
-        To be filled
+        Returns the ammount of services that are either CRITICAL, WARNING or UNKNOWN that are handled
         """
-        pass
+        handled = (self.warning + self.critical + self.unknown) - len(self.unhandled)
 
-    def warning_count(self, arg):
+    def warning_count(self):
         """
-        To be filled
+        Returns the ammount of services that are in state Warning
         """
-        pass
+        return self.warning
 
-    def problem_handled_count(self, arg):
+    def warning_handled_count(self):
         """
         To be filled
         """
-        pass
+        return len(self.warning_handled)
 
     def critical_count(self, arg):
         """
-        To be filled
+        Returns the ammount of services that are in state Warning
         """
-        pass
+        return self.critical
 
-    def critical_handled_count(self, arg):
+    def critical_handled_count(self):
         """
         To be filled
         """
-        pass
+
+        return len(self.critical_handled)
 
     def unknown_count(self, arg):
         """
         To be filled
         """
-        pass
+        return self.unknown
 
     def unknown_handled_count(self, arg):
         """
         To be filled
         """
-        pass
-
-    def problem_list(self, arg):
-        """
-        To be filled
-        """
-        pass
-
-    def problems(self, arg):
-        """
-        To be filled
-        """
-        pass
-
-    def all_count(self, arg):
-        """
-        To be filled
-        """
-        pass
-
-    def update_host(self, arg):
-        """
-        To be filled
-        """
-        pass
+        return len(self.unknown_handled)
