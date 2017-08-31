@@ -14,7 +14,9 @@ class Icinga2APIClient(object):
         "service": "/v1/objects/services",
         "servicegroup": "/v1/objects/servicegroups",
         "notification": "/v1/objects/notifications",
-        "downtime": "/v1/objects/downtimes"
+        "downtime": "/v1/objects/downtimes",
+        "users": "/v1/objects/users",
+        "usergroups": "/v1/objects/usergroups"
     }
 
     def __init__(self):
@@ -68,8 +70,9 @@ class Icinga2APIClient(object):
         :param data: Data Dictionary that is used to add values to Icinga2
         """
         try:
-            ret.raise_for_status()
             ret = self.connection.put(self.baseurl + url, data=json.dumps(data), verify=False)
+            ret.raise_for_status()
+            return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)
             raise

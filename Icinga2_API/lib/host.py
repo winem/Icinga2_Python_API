@@ -1,6 +1,6 @@
 from pprint import pformat
 import logging
-class Host():
+class Hosts():
     """
     Class that contains all informations about Hosts and corresponding funtions
     """
@@ -23,7 +23,7 @@ class Host():
 
         self.filter = 'host'
 
-    def add(self, hostdata=None):
+    def add(self, data=None):
         """
         Adding a Host with a given set of Attributes and/or Templates
 
@@ -39,49 +39,49 @@ class Host():
         }
         """
 
-        def validate_hostdata(hostdata):
-            NEEDED_VALUES = ("name")
+        def validate_data(data):
+            NEEDED_VALUES = ["name"]
 
             for need in NEEDED_VALUES:
-                if need in hostdata['attrs']:
+                if need in data['attrs']:
                     pass
                 else:
                     raise ValueError("Error in Hostdata, expected {} but was not found".format(need))
 
-        if not hostdata:
+        if not data:
             raise ValueError("HostData not set")
         else:
-            validate_hostdata(hostdata)
+            validate_data(data)
 
-        self.log.debug("Adding host with the following data: {}".format(pformat(hostdata)))
-        self.client.put_Data(self.client.URLCHOICES[self.filter] + hostdata['attrs']['name'], hostdata)
+        self.log.debug("Adding host with the following data: {}".format(pformat(data)))
+        self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['name'], data)
 
 
-    def delete(self, hostname=None):
+    def delete(self, name=None):
         """
         Delte a Host based on the hostname
 
-        :param hostname: Hostname of the Host that is to be deleted
+        :param name: Hostname of the Host that is to be deleted
         """
         if not hostname:
             raise ValueError("Hostname not set")
         else:
-            self.log.debug("Deleting Host with name: {}".format(hostname))
-            self.client.delete_Data(self.client.URLCHOICES[self.filter] + hostname)
+            self.log.debug("Deleting Host with name: {}".format(name))
+            self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
 
-    def list(self, hostname=None):
+    def list(self, name=None):
         """
         Method to list all hosts or only a select one
         Returns a list of all Hosts
 
-        :param hostname: can be used to only list one Host, if not set it will retrieve all Hosts
+        :param name: can be used to only list one Host, if not set it will retrieve all Hosts
         """
-        if hostname is not None:
+        if name is not None:
             host_filter = {
                 "attrs": ["name"],
                 "filter": "host.name == name",
                 "filter_vars": {
-                    "name": hostname
+                    "name": name
                 }
             }
         else:
@@ -101,14 +101,14 @@ class Host():
         return return_list
 
 
-    def exists(self, hostname=None):
+    def exists(self, name=None):
         """
         Method to check if a single host exists
 
-        :param hostname: Is needed to check if the Host exists, will throw a Value Exception when not set
+        :param name: Is needed to check if the Host exists, will throw a Value Exception when not set
         """
-        if hostname:
-            result = self.list(hostname=hostname)
+        if name:
+            result = self.list(name=name)
 
             if not result:
                 return False
