@@ -56,17 +56,17 @@ class Usergroups():
         return self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['user_name'], data)
 
 
-    def delete(self, username=None):
+    def delete(self, name=None):
         """
-        Delete a User based on the user_name
+        Delete a Usergroup based on the user_name
 
-        :param username: Username of the User that is to be deleted
+        :param name: name of the Usergroup that is to be deleted
         """
         if not hostname:
-            raise ValueError("Username not set")
+            raise ValueError("name not set")
         else:
             self.log.debug("Deleting User with name: {}".format(hostname))
-            self.client.delete_Data(self.client.URLCHOICES[self.filter] + username)
+            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
 
     def list(self, name=None):
         """

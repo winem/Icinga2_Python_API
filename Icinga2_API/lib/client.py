@@ -10,9 +10,9 @@ class Icinga2APIClient(object):
 
     URLCHOICES = {
         "host": "/v1/objects/hosts",
-        "hostgroup": "/v1/objects/hostgroups",
+        "hostgroups": "/v1/objects/hostgroups",
         "service": "/v1/objects/services",
-        "servicegroup": "/v1/objects/servicegroups",
+        "servicegroups": "/v1/objects/servicegroups",
         "notification": "/v1/objects/notifications",
         "downtime": "/v1/objects/downtimes",
         "users": "/v1/objects/users",
