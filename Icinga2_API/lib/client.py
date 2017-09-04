@@ -62,15 +62,16 @@ class Icinga2APIClient(object):
             self.log.error(e)
             raise
 
-    def put_Data(self, url):
+    def put_Data(self, url, data):
         """
         Put Data into Icinga2 via the API
 
-        :param type: type of uri to attach to url
+        :param url: type of uri to attach to url
         :param data: Data Dictionary that is used to add values to Icinga2
         """
         try:
             ret = self.connection.put(self.baseurl + url, data=json.dumps(data), verify=False)
+            self.log.debug(ret.text)
             ret.raise_for_status()
             return json.loads(ret.text)
         except Exception as e:

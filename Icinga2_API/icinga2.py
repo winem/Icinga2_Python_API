@@ -25,7 +25,7 @@ class Icinga2API(object):
         self.client.setconfig(username, password, url)
         self.downtime = downtime.Downtime(client=self.client)
         self.host = host.Hosts(client=self.client)
-        self.hostgroup = hostgroups.Hostgroup(client=self.client)
+        self.hostgroup = hostgroups.Hostgroups(client=self.client)
         self.notification = notifications.Notification(client=self.client)
         self.service = service.Service(client=self.client)
         self.servicegroup = servicegroups.Servicegroups(client=self.client)

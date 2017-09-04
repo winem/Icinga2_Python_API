@@ -53,8 +53,11 @@ class Hosts():
         else:
             validate_data(data)
 
+        name = data['attrs'].pop("name")
+
+
         self.log.debug("Adding host with the following data: {}".format(pformat(data)))
-        self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['name'], data)
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + name, data)
 
 
     def delete(self, name=None):
@@ -63,11 +66,11 @@ class Hosts():
 
         :param name: Hostname of the Host that is to be deleted
         """
-        if not hostname:
+        if not name:
             raise ValueError("Hostname not set")
         else:
             self.log.debug("Deleting Host with name: {}".format(name))
-            self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
+            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + name)
 
     def list(self, name=None):
         """

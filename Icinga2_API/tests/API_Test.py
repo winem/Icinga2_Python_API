@@ -1,9 +1,64 @@
-from nose.tools import assert_true, assert_is_not_none
 import urllib3
-import requests
+import pytest
+import copy
 from ..icinga2 import Icinga2API
+from Constants import Constants
 
-def test_host_objects():
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    response = requests.get("https://root:1a15f273bf8c908d@icinga.mw-krz-swd.de:5665/v1/objects/hostgroups", verify=False)
-    assert_true(response.ok)
+class Test_API():
+
+    def test_host_add(self):
+        """
+        Testing the addition of a host
+        """
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        self.api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url, debug=True)
+
+        data = copy.deepcopy(Constants.TestHost_data)
+
+        response = self.api.host.add(data)
+
+        assert response['results'][0]['code'] == 200
+
+    def test_host_exists(self):
+        """
+        Testing if the host was added correctly
+        """
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        self.api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url)
+
+        response = self.api.host.exists(Constants.TestHost_data['attrs']['name'])
+
+        assert response
+
+    def test_host_list(self):
+        """
+        Listing all Hosts, and check if created host is present
+        """
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        self.api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url)
+
+        response = self.api.host.list()
+
+        assert Constants.TestHost_data['attrs']['name'] in response
+
+    def test_host_objects(self):
+        """
+        Get all Host Objects and check if created host is present
+        """
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        self.api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url)
+
+        response = self.api.host.objects()
+
+        assert any(res.get('name', None) == Constants.TestHost_data['attrs']['name'] for res in response)
+
+    def test_host_delete(self):
+        """
+        Delete the created Host
+        """
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        self.api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url)
+
+        response = self.api.host.delete(Constants.TestHost_data['attrs']['name'])
+
+        assert response != None
