@@ -10,11 +10,13 @@ class Icinga2APIClient(object):
 
     URLCHOICES = {
         "host": "/v1/objects/hosts",
-        "hostgroup": "/v1/objects/hostgroups",
+        "hostgroups": "/v1/objects/hostgroups",
         "service": "/v1/objects/services",
-        "servicegroup": "/v1/objects/servicegroups",
+        "servicegroups": "/v1/objects/servicegroups",
         "notification": "/v1/objects/notifications",
-        "downtime": "/v1/objects/downtimes"
+        "downtime": "/v1/objects/downtimes",
+        "users": "/v1/objects/users",
+        "usergroups": "/v1/objects/usergroups"
     }
 
     def __init__(self):
@@ -60,16 +62,18 @@ class Icinga2APIClient(object):
             self.log.error(e)
             raise
 
-    def put_Data(self, url):
+    def put_Data(self, url, data):
         """
         Put Data into Icinga2 via the API
 
-        :param type: type of uri to attach to url
+        :param url: type of uri to attach to url
         :param data: Data Dictionary that is used to add values to Icinga2
         """
         try:
-            ret.raise_for_status()
             ret = self.connection.put(self.baseurl + url, data=json.dumps(data), verify=False)
+            self.log.debug(ret.text)
+            ret.raise_for_status()
+            return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)
             raise
