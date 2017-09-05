@@ -15,7 +15,6 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - cd Icinga2_API
-  - py.test
+  - py.test --cov-report term-missing --cov Icinga2_API
 
 fast_finish: true
