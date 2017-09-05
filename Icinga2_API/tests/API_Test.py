@@ -4,7 +4,7 @@ import copy
 from ..icinga2 import Icinga2API
 from Constants import Constants
 
-class Test_API():
+class api_test():
 
     def test_host_add(self):
         """
