@@ -19,4 +19,6 @@ setup(
   download_url = 'https://github.com/KevinHonka/Icinga2_Python_API/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['Icinga2', 'API'], # arbitrary keywords
   classifiers = [],
+  setup_requires=['pytest-runner'],
+  tests_require=['pytest']
 )
