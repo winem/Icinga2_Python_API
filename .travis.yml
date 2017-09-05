@@ -12,7 +12,7 @@ before_install:
   - sleep 20s
 
 install:
-  - pip install --user -r requirements.txt
+  - pip install -r requirements.txt
 
 script:
   - python -m py.test
