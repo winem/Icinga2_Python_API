@@ -1,7 +1,7 @@
 import urllib3
 import pytest
 import copy
-from ..icinga2 import Icinga2API
+from icinga2_api import Icinga2API
 import Constants
 
 def test_host_add():
