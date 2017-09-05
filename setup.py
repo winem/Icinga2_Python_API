@@ -9,8 +9,8 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-  name = 'Icinga2 API',
-  packages = ['Icinga2_API'], # this must be the same as the name above
+  name = 'icinga2 api',
+  packages = ['icinga2_api'], # this must be the same as the name above
   version = '0.1',
   description = 'An enhanced API to communicate with Icinga2',
   author = 'Kevin Honka',
