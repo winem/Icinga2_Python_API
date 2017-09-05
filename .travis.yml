@@ -1,0 +1,20 @@
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull bodsch/docker-icinga2:1708-33.1
+  - docker run --rm --detach --publish=5665:5665 --env ICINGA_MASTER=icinga2 --env ICINGA_CLUSTER=true --env ICINGA_API_USERS=root:icinga --env DEMO_DATA=true --hostname=icinga2 bodsch/docker-icinga2:1708-33.1
+  - docker ps -a
+  - sleep 20s
+
+install:
+  - pip install --user -r requirements.txt
+
+script:
+  - python -m py.test
+
+fast_finish: true
