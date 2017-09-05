@@ -16,7 +16,8 @@ setup(
   author = 'Kevin Honka',
   author_email = 'kevin.honka@astosch.de',
   url = 'https://github.com/KevinHonka/Icinga2_Python_API', # use the URL to the github repo
-  download_url = 'https://github.com/KevinHonka/Icinga2_Python_API/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['Icinga2', 'API'], # arbitrary keywords
   classifiers = [],
+  setup_requires=['pytest-runner'],
+  tests_require=['pytest']
 )

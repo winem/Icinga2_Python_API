@@ -1,17 +1,13 @@
-class Constants:
-    """
-    A Class to hold all the needed variables for the Test
-    """
-    username = "root"
-    password = "icinga"
-    url = "https://localhost:5665"
+username = "root"
+password = "icinga"
+url = "https://localhost:5665"
 
-    TestHost_data = {
-        "templates": [ "generic-host" ],
-        "attrs": {
-            "name": "test.localdomain",
-            "address": "192.168.1.1",
-            "check_command": "hostalive",
-            "vars.os" : "Linux"
-            }
-    }
+TestHost_data = {
+    "templates": [ "generic-host" ],
+    "attrs": {
+        "name": "test.localdomain",
+        "address": "192.168.1.1",
+        "check_command": "hostalive",
+        "vars.os" : "Linux"
+        }
+}
