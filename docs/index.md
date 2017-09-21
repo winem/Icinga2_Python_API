@@ -1,17 +1,35 @@
-# Welcome to MkDocs
+# Functions and how to use them:
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+## Client
+**WARNING: This class is intended for internal use only and should not be called from the outside**
 
-## Commands
+If you choose to ignore this warning, you can see how to use it below.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+```python
+import icinga2_api.lib.client
 
-## Project layout
+client = client.Icinga2APIClient()
+client.setconfig(username, password, url)
+```
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+to see which functions are availablie head here: [functions](client.md)
+
+## Host
+TBD
+[functions](host.md)
+
+## Service
+TBD
+[functions](service.md)
+
+## User
+TBD
+[functions](user.md)
+
+## Groups
+TBD
+[functions](groups.md)
+
+## Downtime
+TBD
+[functions](downtime.md)
