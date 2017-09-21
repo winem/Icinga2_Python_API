@@ -37,40 +37,40 @@ class Icinga2APIClient(object):
 
         self.connection.auth = (username, password)
 
-    def get_Data(self, url):
+    def get_Data(self, uri):
         """
         Get Data from icinga2
         """
         try:
-            ret = self.connection.get(self.baseurl + url, verify=False)
+            ret = self.connection.get(self.baseurl + uri, verify=False)
             ret.raise_for_status()
             return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)
             raise
 
-    def delete_Data(self, url):
+    def delete_Data(self, uri):
         """
         Delete Data from icinga2
         """
 
         try:
-            ret = self.connection.get(self.baseurl + url, verify=False)
+            ret = self.connection.get(self.baseurl + uri, verify=False)
             ret.raise_for_status()
             return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)
             raise
 
-    def put_Data(self, url, data):
+    def put_Data(self, uri, data):
         """
         Put Data into Icinga2 via the API
 
-        :param url: type of uri to attach to url
+        :param uri: type of uri to attach to url
         :param data: Data Dictionary that is used to add values to Icinga2
         """
         try:
-            ret = self.connection.put(self.baseurl + url, data=json.dumps(data), verify=False)
+            ret = self.connection.put(self.baseurl + uri, data=json.dumps(data), verify=False)
             self.log.debug(ret.text)
             ret.raise_for_status()
             return json.loads(ret.text)
@@ -78,15 +78,16 @@ class Icinga2APIClient(object):
             self.log.error(e)
             raise
 
-    def post_Data(self, url, data):
+    def post_Data(self, uri, data):
         """
         POST method
-        :param type: type of uri to attach to url
+        :param uri: type of uri to attach to url
         :param data: Data Dictionary that is used to query the Icinga2API
         """
         try:
-            ret = self.connection.post(self.baseurl + url, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
+            ret = self.connection.post(self.baseurl + uri, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
             ret.raise_for_status()
+            self.log.debug(ret.uri)
             return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)
