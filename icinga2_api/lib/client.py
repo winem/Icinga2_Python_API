@@ -81,13 +81,12 @@ class Icinga2APIClient(object):
     def post_Data(self, uri, data):
         """
         POST method
-        :param uri: type of uri to attach to url
+        :param type: type of uri to attach to url
         :param data: Data Dictionary that is used to query the Icinga2API
         """
         try:
-            ret = self.connection.post(self.baseurl + uri, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
+            ret = self.connection.post(self.baseurl + url, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
             ret.raise_for_status()
-            self.log.debug(ret.uri)
             return json.loads(ret.text)
         except Exception as e:
             self.log.error(e)

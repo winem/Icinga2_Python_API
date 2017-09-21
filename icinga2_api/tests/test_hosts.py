@@ -54,4 +54,4 @@ def test_host_delete():
 
     response = api.host.delete(Constants.TestHost_data['attrs']['name'])
 
-    assert response != None
+    assert response != None 
