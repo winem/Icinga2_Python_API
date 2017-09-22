@@ -44,9 +44,7 @@ class Hosts():
             NEEDED_VALUES = ["name"]
 
             for need in NEEDED_VALUES:
-                if need in data['attrs']:
-                    pass
-                else:
+                if not need in data['attrs']:
                     raise ValueError("Error in data, expected {} but was not found".format(need))
 
         if not data:
