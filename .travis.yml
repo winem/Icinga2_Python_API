@@ -16,6 +16,7 @@ install:
   - pip install pytest-cov
 
 script:
+  - ls -la
   - python setup.py pytest
 
 fast_finish: true
