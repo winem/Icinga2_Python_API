@@ -23,16 +23,16 @@ class Icinga2API(object):
 
         self.client = client.Icinga2APIClient()
         self.client.setconfig(username, password, url)
-        self.downtime = downtime.Downtime(client=self.client)
-        self.host = host.Hosts(client=self.client)
-        self.hostgroup = hostgroups.Hostgroups(client=self.client)
-        self.notification = notifications.Notification(client=self.client)
-        self.service = service.Service(client=self.client)
-        self.servicegroup = servicegroups.Servicegroups(client=self.client)
-        self.usergroup = usergroups.Usergroups(client=self.client)
-        self.user = users.Users(client=self.client)
+        self.downtimes = downtime.Downtime(client=self.client)
+        self.hosts = host.Hosts(client=self.client)
+        self.hostgroups = hostgroups.Hostgroups(client=self.client)
+        self.notifications = notifications.Notification(client=self.client)
+        self.services = service.Service(client=self.client)
+        self.servicegroups = servicegroups.Servicegroups(client=self.client)
+        self.usergroups = usergroups.Usergroups(client=self.client)
+        self.users = users.Users(client=self.client)
 
 
 if __name__ == '__main__':
     api = Icinga2API(username="root", password="1a15f273bf8c908d", url="https://icinga.mw-krz-swd.de:5665", debug=True)
-    pprint(api.usergroup.objects())
+    pprint(api.hosts.problem_count())

@@ -46,9 +46,7 @@ class Service():
             NEEDED_VALUES = ("check_command", "check_interval", "retry_interval")
 
             for need in NEEDED_VALUES:
-                if need in servicedata['attrs']:
-                    pass
-                else:
+                if not need in servicedata['attrs']:
                     raise ValueError("Error in Servicedata, expected {} but was not found".format(need))
 
         if not servicedata:
@@ -213,7 +211,7 @@ class Service():
         """
         Returns the ammount of services that are either CRITICAL, WARNING or UNKNOWN that are handled
         """
-        handled = (self.warning + self.critical + self.unknown) - len(self.unhandled)
+         return (self.warning + self.critical + self.unknown) - len(self.unhandled)
 
     def warning_count(self):
         """
