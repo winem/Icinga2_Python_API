@@ -27,9 +27,10 @@ class Hosts():
         """
         Adding a Host with a given set of Attributes and/or Templates
 
-        :param hostdata: Provides the needed variables to create a host.
+        :param data: Provides the needed variables to create a host.
         Example:
         data = {
+            "name": "test.localdomain",
             "template": [ "generic-host" ],
             "attrs": {
                 "name": "testserver1",
@@ -46,10 +47,10 @@ class Hosts():
                 if need in data['attrs']:
                     pass
                 else:
-                    raise ValueError("Error in Hostdata, expected {} but was not found".format(need))
+                    raise ValueError("Error in data, expected {} but was not found".format(need))
 
         if not data:
-            raise ValueError("HostData not set")
+            raise ValueError("data not set")
         else:
             validate_data(data)
 
@@ -167,17 +168,6 @@ class Hosts():
             self.problems_unknown = problem_count(result['results'], self.HOST_STATUS['UNKNOWN'])
 
         return result['results']
-
-
-    def adjusted(self, arg):
-        """
-        To be filled
-        """
-        handled_problems = self.problems_down + self.problems_unknown + self.problems_critical
-        down_adjusted = self.hosts_down + handled_problems
-
-        return (handled_problems, down_adjusted)
-
 
     def problem_count(self):
         """
