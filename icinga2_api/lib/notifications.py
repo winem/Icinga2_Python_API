@@ -1,3 +1,4 @@
+from . import client
 class Notification():
     """
     Class that contains all informations about Services and corresponding funtions

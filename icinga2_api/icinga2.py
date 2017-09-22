@@ -1,4 +1,4 @@
-from icinga2_api.lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
+from lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
 from pprint import pprint
 import logging
 import sys

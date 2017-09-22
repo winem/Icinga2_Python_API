@@ -1,3 +1,4 @@
+from . import client
 class Downtime():
     """
     Class that contains all informations about downtimes and corresponding funtions
