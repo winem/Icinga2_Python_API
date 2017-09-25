@@ -21,7 +21,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 data = {
     "name": "test.localdomain"
@@ -47,7 +47,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 name = "test.localdomain"
 
@@ -64,7 +64,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 name = "test.localdomain"
 
@@ -85,7 +85,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 name = "test.localdomain"
 
@@ -103,7 +103,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 attrs = ['name', 'state', 'last_check']
 _filter = ['host.name == test.localdomain', 'service.name == ping4']
@@ -122,7 +122,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 api = Icinga2API(username="root", password="icinga2", url="https://localhost:5665")
 api.hosts.problem_count()
@@ -136,7 +136,7 @@ Parameters:
 
 Example:
 ```python
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 
 api = Icinga2API(username="root", password="icinga2", url="https://localhost:5665")
 api.hosts.problem_list()
