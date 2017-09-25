@@ -12,7 +12,7 @@ def test_host_add():
 
     data = copy.deepcopy(Constants.TestHost_data)
 
-    response = api.host.add(data)
+    response = api.hosts.add(data)
 
     assert response['results'][0]['code'] == 200
 
@@ -22,7 +22,7 @@ def test_host_exists():
     """
     api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url, debug=True)
 
-    response = api.host.exists(Constants.TestHost_data['attrs']['name'])
+    response = api.hosts.exists(Constants.TestHost_data['attrs']['name'])
 
     assert response
 
@@ -32,7 +32,7 @@ def test_host_list():
     """
     api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url, debug=True)
 
-    response = api.host.list()
+    response = api.hosts.list()
 
     assert Constants.TestHost_data['attrs']['name'] in response
 
@@ -42,7 +42,7 @@ def test_host_objects():
     """
     api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url, debug=True)
 
-    response = api.host.objects()
+    response = api.hosts.objects()
 
     assert any(res.get('name', None) == Constants.TestHost_data['attrs']['name'] for res in response)
 
@@ -52,6 +52,6 @@ def test_host_delete():
     """
     api = Icinga2API(username=Constants.username,password=Constants.password,url=Constants.url, debug=True)
 
-    response = api.host.delete(Constants.TestHost_data['attrs']['name'])
+    response = api.hosts.delete(Constants.TestHost_data['attrs']['name'])
 
     assert response != None
