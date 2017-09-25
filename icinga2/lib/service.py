@@ -211,7 +211,7 @@ class Service():
         """
         Returns the ammount of services that are either CRITICAL, WARNING or UNKNOWN that are handled
         """
-         return (self.warning + self.critical + self.unknown) - len(self.unhandled)
+        return (self.warning + self.critical + self.unknown) - len(self.unhandled)
 
     def warning_count(self):
         """
