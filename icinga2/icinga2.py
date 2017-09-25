@@ -1,7 +1,11 @@
-from lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
-from pprint import pprint
+from __future__ import absolute_import
+
 import logging
 import sys
+from pprint import pprint
+
+from icinga2.lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
+
 
 class Icinga2API(object):
     """
