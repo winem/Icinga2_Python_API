@@ -1,7 +1,7 @@
 import urllib3
 import pytest
 import copy
-from icinga2_api import Icinga2API
+from icinga2 import Icinga2API
 import Constants
 
 def test_host_add():
@@ -54,4 +54,4 @@ def test_host_delete():
 
     response = api.host.delete(Constants.TestHost_data['attrs']['name'])
 
-    assert response != None 
+    assert response != None
