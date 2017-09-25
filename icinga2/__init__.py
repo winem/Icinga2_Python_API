@@ -1,1 +1,1 @@
-from icinga2 import Icinga2API
+from .icinga2 import Icinga2API
