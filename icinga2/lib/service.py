@@ -26,11 +26,13 @@ class Service():
 
         self.filter = 'service'
 
-    def add(self, servicename, hostname, servicedata=None):
+    def add(self, servicename, hostname, data=None):
         """
         Adding a Service with a given set of Attributes and/or Templates
 
-        :param servicedata: Provides the needed variables to create a service.
+        :param hostname:
+        :param servicename:
+        :param data: Provides the needed variables to create a service.
         Example:
         data = {
             "templates": [ "generic-service" ],
@@ -42,32 +44,31 @@ class Service():
         }
         """
 
-        def validate_servicedata(servicedata):
+        def validate_data(data):
             NEEDED_VALUES = ("check_command", "check_interval", "retry_interval")
 
             for need in NEEDED_VALUES:
-                if not need in servicedata['attrs']:
+                if not need in data['attrs']:
                     raise ValueError("Error in Servicedata, expected {} but was not found".format(need))
 
-        if not servicedata:
-            raise ValueError("ServiceData not set")
+        if not data:
+            raise ValueError("Data not set")
         else:
-            validate_hostdata(hostdata)
+            validate_data(data)
 
-        self.log.debug("Adding service with the following data: {}".format(pformat(servicedata)))
-        self.client.put_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename, servicedata)
+        self.log.debug("Adding service with the following data: {}".format(pformat(data)))
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename, data)
 
-    def delete(self, hostname=None, servicename=None):
+    def delete(self, hostname, servicename):
         """
         Delte a Service based on the hostname and servicename
 
+        :param servicename: Servicename that is to be deleted
         :param hostname: Hostname of the Host that is to be deleted
         """
-        if not hostname and not servicename:
-            raise ValueError("Hostname or Servicename not set")
-        else:
-            self.log.debug("Deleting Host with name: {}".format(hostname))
-            self.client.delete_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename)
+
+        self.log.debug("Deleting Service '{}' from Host '{}'".format(servicename, hostname))
+        return self.client.delete_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename)
 
     def list(self, hostname=None, servicename=None):
         """
@@ -82,7 +83,6 @@ class Service():
         filter_vars = {}
 
         if hostname:
-            joins.append("host.name")
             filters = "host.name == hostname"
             filter_vars['hostname'] = hostname
 
@@ -97,6 +97,9 @@ class Service():
         payload['attrs'] = attrs
         if joins:
             payload['joins'] = joins
+        else:
+            joins.append("host.name")
+
         if filters:
             payload['filter'] = filters
             payload['filter_vars'] = filter_vars
@@ -104,10 +107,12 @@ class Service():
         self.log.debug("Listing all Services that match: {}".format(pformat(payload)))
         ret = self.client.post_Data(self.client.URLCHOICES[self.filter], payload)
 
-        return_list = []
+        return_list = {}
+
+        #TODO: Changing the return to a dictionary with a list, identified by the hostname
 
         for attrs in ret['results']:
-            return_list.append(attrs['name'])
+            return_list('host.name') = attrs['name']
 
         self.log.debug("Finished list of all matches: {}".format(pformat(return_list)))
         return return_list
@@ -209,7 +214,7 @@ class Service():
 
     def problem_handled_count(self):
         """
-        Returns the ammount of services that are either CRITICAL, WARNING or UNKNOWN that are handled
+        Returns the amount of services that are either CRITICAL, WARNING or UNKNOWN that are handled
         """
         return (self.warning + self.critical + self.unknown) - len(self.unhandled)
 
