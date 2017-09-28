@@ -61,3 +61,5 @@ target/
 # Sonarqube
 .sonarwork
 .scannerwork
+
+\.idea/
