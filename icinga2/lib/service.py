@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Service():
     """
     Class that contains all informations about Services and corresponding funtions
@@ -30,6 +32,7 @@ class Service():
         """
         Adding a Service with a given set of Attributes and/or Templates
 
+        :rtype: dict
         :param hostname:
         :param servicename:
         :param data: Provides the needed variables to create a service.
@@ -57,7 +60,7 @@ class Service():
             validate_data(data)
 
         self.log.debug("Adding service with the following data: {}".format(pformat(data)))
-        return self.client.put_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename, data)
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + hostname + "!" + servicename, data)
 
     def delete(self, hostname, servicename):
         """
@@ -68,7 +71,7 @@ class Service():
         """
 
         self.log.debug("Deleting Service '{}' from Host '{}'".format(servicename, hostname))
-        return self.client.delete_Data(self.client.URLCHOICES[self.filter] + hostname + "!" + servicename)
+        return self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + hostname + "!" + servicename)
 
     def list(self, hostname=None, servicename=None):
         """
@@ -112,7 +115,7 @@ class Service():
         #TODO: Changing the return to a dictionary with a list, identified by the hostname
 
         for attrs in ret['results']:
-            return_list('host.name') = attrs['name']
+            return_list['host.name'] = attrs['name']
 
         self.log.debug("Finished list of all matches: {}".format(pformat(return_list)))
         return return_list
