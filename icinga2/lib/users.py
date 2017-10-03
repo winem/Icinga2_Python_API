@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Users():
     """
     Class that contains all informations about Users and corresponding funtions
@@ -21,6 +23,7 @@ class Users():
         """
         Adding a User with a given set of Attributes and/or Templates
 
+        :rtype:
         :param data: Provides the needed variables to create a user.
         Example:
         data = {
