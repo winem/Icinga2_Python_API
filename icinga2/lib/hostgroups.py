@@ -21,10 +21,10 @@ class Hostgroups():
 
     def add(self, data=None):
         """
-        Adding a Usergroup with a given set of Attributes and/or Templates
+        Adding a Hostgroup with a given set of Attributes and/or Templates
 
         :rtype:
-        :param data: Provides the needed variables to create a Servicegroup.
+        :param data: Provides the needed variables to create a Hostgroup.
         Example:
         data = {
             "attrs": {
@@ -61,38 +61,37 @@ class Hostgroups():
 
     def delete(self, name=None):
         """
-        Delete a User based on the user_name
+        Delete a Hostgroup based on the name
 
         :param name: Name of the Hostgroup that is to be deleted
         """
-        if not hostname:
+        if not name:
             raise ValueError("Username not set")
         else:
-            self.log.debug("Deleting {} with name: {}".format(self.__name__, hostname))
+            self.log.debug("Deleting {} with name: {}".format(self.__name__, name))
             return self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
 
     def list(self, name=None):
         """
-        Method to list all users or only a select one
-        Returns a list of all Users
+        Method to list all Hostgroups or only a select one
 
-        :param name: can be used to only list one Usergroup, if not set it will retrieve all Hostgroups
+        :param name: can be used to only list one Hostgroups, if not set it will retrieve all Hostgroups
         """
         if name is not None:
-            usergroup_filter = {
-                "attrs": ["__name"],
+            group_filter = {
+                "attrs": ["name"],
                 "filter": "user.__name == name",
                 "filter_vars": {
                     "name": name
                 }
             }
         else:
-            usergroup_filter = {
+            group_filter = {
                 "attrs": ["name"]
             }
 
-        self.log.debug("Listing all {} that match: {}".format(pformat(self.__name__, usergroup_filter)))
-        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], usergroup_filter)
+        self.log.debug("Listing all {} that match: {}".format(self.__name__, pformat(group_filter)))
+        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], group_filter)
 
         return_list = []
 
@@ -109,7 +108,7 @@ class Hostgroups():
 
         :param name: Is needed to check if the Hostgroup exists, will throw a Value Exception when not set
         """
-        if hostname:
+        if name:
             result = self.list(name=name)
 
             if not result:
