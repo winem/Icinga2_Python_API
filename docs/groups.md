@@ -104,9 +104,9 @@ Example:
 ```python
 from icinga2 import Icinga2API
 
-attrs = ['name', 'state', 'last_check']
-_filter = ['host.name == test.localdomain', 'service.name == ping4']
-joins = ['service.name']
+attrs = ['name', groups]
+_filter = ['name == GroupA']
+joins = ['']
 
 
 api = Icinga2API(username="root", password="icinga2", url="https://localhost:5665")
