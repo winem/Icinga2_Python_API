@@ -52,11 +52,14 @@ class Usergroups():
         else:
             ret = validate_data(data)
 
-        if not ret is True:
+        if not ret:
             return ret
 
+        payload = {}
+        payload["attrs"] = data["attrs"]
+
         self.log.debug("Adding user with the following data: {}".format(pformat(data)))
-        return self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['user_name'], data)
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + data['name'], payload)
 
 
     def delete(self, name=None):
@@ -65,34 +68,33 @@ class Usergroups():
 
         :param name: name of the Usergroup that is to be deleted
         """
-        if not hostname:
+        if not name:
             raise ValueError("name not set")
         else:
-            self.log.debug("Deleting User with name: {}".format(hostname))
-            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
+            self.log.debug("Deleting User with name: {}".format(name))
+            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + name)
 
     def list(self, name=None):
         """
-        Method to list all users or only a select one
-        Returns a list of all Users
+        Method to list all Usergroups or only a select one
 
         :param name: can be used to only list one Usergroup, if not set it will retrieve all Usergroups
         """
         if name is not None:
-            usergroup_filter = {
-                "attrs": ["__name"],
-                "filter": "user.__name == name",
+            group_filter = {
+                "attrs": ["name"],
+                "filter": "name == name",
                 "filter_vars": {
                     "name": name
                 }
             }
         else:
-            usergroup_filter = {
+            group_filter = {
                 "attrs": ["name"]
             }
 
-        self.log.debug("Listing all Users that match: {}".format(pformat(usergroup_filter)))
-        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], usergroup_filter)
+        self.log.debug("Listing all Users that match: {}".format(pformat(group_filter)))
+        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], group_filter)
 
         return_list = []
 
@@ -105,11 +107,11 @@ class Usergroups():
 
     def exists(self, name=None):
         """
-        Method to check if a single User exists
+        Method to check if a single Usergroup exists
 
         :param name: Is needed to check if the User exists, will throw a Value Exception when not set
         """
-        if hostname:
+        if name:
             result = self.list(name=name)
 
             if not result:
@@ -133,7 +135,7 @@ class Usergroups():
         if attrs:
             payload['attrs'] = attrs
         else:
-            payload['attrs'] = ['__name', 'display_name']
+            payload['attrs'] = ['name', 'display_name']
 
         self.log.debug("Attrs set to: {}".format(pformat(payload['attrs'])))
 

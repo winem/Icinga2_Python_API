@@ -27,6 +27,7 @@ class Hostgroups():
         :param data: Provides the needed variables to create a Hostgroup.
         Example:
         data = {
+            "name": "GroupA",
             "attrs": {
                 "name": "GroupA",
                 "groups": ["GroupB", "GroupC"]
@@ -38,7 +39,7 @@ class Hostgroups():
             """
             Returns an empty list, if everything checks out
             """
-            needed_vars=["name","display_name"]
+            needed_vars = ["name"]
             missing_keys = []
 
             for need in needed_vars:
@@ -52,11 +53,14 @@ class Hostgroups():
         else:
             ret = validate_data(data)
 
-        if not ret is True:
+        if ret:
             return ret
 
-        self.log.debug("Adding {} with the following data: {}".format(self.__name__, pformat(data)))
-        return self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['user_name'], data)
+        payload = {}
+        payload["attrs"] = data["attrs"]
+
+        self.log.debug("Adding {} with the following data: {}".format(self.__class__, pformat(data)))
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + data['name'], payload)
 
 
     def delete(self, name=None):
@@ -68,8 +72,8 @@ class Hostgroups():
         if not name:
             raise ValueError("Username not set")
         else:
-            self.log.debug("Deleting {} with name: {}".format(self.__name__, name))
-            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
+            self.log.debug("Deleting {} with name: {}".format(self.__class__, name))
+            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + name)
 
     def list(self, name=None):
         """
@@ -77,10 +81,10 @@ class Hostgroups():
 
         :param name: can be used to only list one Hostgroups, if not set it will retrieve all Hostgroups
         """
-        if name is not None:
+        if name:
             group_filter = {
                 "attrs": ["name"],
-                "filter": "user.__name == name",
+                "filter": "name == name",
                 "filter_vars": {
                     "name": name
                 }
@@ -90,7 +94,7 @@ class Hostgroups():
                 "attrs": ["name"]
             }
 
-        self.log.debug("Listing all {} that match: {}".format(self.__name__, pformat(group_filter)))
+        self.log.debug("Listing all {} that match: {}".format(self.__class__, pformat(group_filter)))
         ret = self.client.post_Data(self.client.URLCHOICES[self.filter], group_filter)
 
         return_list = []

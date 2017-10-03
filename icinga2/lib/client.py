@@ -1,7 +1,9 @@
-from requests import Session
-import urllib3
-import logging
 import json
+import logging
+
+import urllib3
+from requests import Session
+
 
 class Icinga2APIClient(object):
     """
@@ -55,7 +57,7 @@ class Icinga2APIClient(object):
         """
 
         try:
-            ret = self.connection.get(self.baseurl + url, verify=False)
+            ret = self.connection.delete(self.baseurl + url, verify=False)
             ret.raise_for_status()
             return json.loads(ret.text)
         except Exception as e:
@@ -78,14 +80,15 @@ class Icinga2APIClient(object):
             self.log.error(e)
             raise
 
-    def post_Data(self, url, data):
+    def post_Data(self, uri, data):
         """
         POST method
-        :param type: type of uri to attach to url
+        :param uri: uri to attach to url
         :param data: Data Dictionary that is used to query the Icinga2API
         """
         try:
-            ret = self.connection.post(self.baseurl + url, headers={'X-HTTP-Method-Override': 'GET'}, data=json.dumps(data), verify=False)
+            ret = self.connection.post(self.baseurl + uri, headers={'X-HTTP-Method-Override': 'GET'},
+                                       data=json.dumps(data), verify=False)
             ret.raise_for_status()
             return json.loads(ret.text)
         except Exception as e:

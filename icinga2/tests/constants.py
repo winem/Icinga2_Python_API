@@ -15,6 +15,27 @@ class constants():
 
     TestService_name = "TestService"
 
+    Test_Hostgroup = {
+        "name": "HostGroupA",
+        "attrs": {
+            "display_name": "Host Test GroupA"
+        }
+    }
+
+    Test_Servicegroup = {
+        "name": "ServiceGroupA",
+        "attrs": {
+            "display_name": "Service Test GroupA"
+        }
+    }
+
+    Test_Usergroup = {
+        "name": "UserGroupA",
+        "attrs": {
+            "display_name": "Service Test GroupA"
+        }
+    }
+
     TestService_data = {
         "templates": ["generic-service"],
         "attrs": {

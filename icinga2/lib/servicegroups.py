@@ -21,7 +21,7 @@ class Servicegroups():
 
     def add(self, data=None):
         """
-        Adding a Usergroup with a given set of Attributes and/or Templates
+        Adding a Servicegroup with a given set of Attributes and/or Templates
 
         :rtype:
         :param data: Provides the needed variables to create a Servicegroup.
@@ -38,7 +38,7 @@ class Servicegroups():
             """
             Returns an empty list, if everything checks out
             """
-            needed_vars=["name","display_name"]
+            needed_vars = ["name"]
             missing_keys = []
 
             for need in needed_vars:
@@ -52,47 +52,49 @@ class Servicegroups():
         else:
             ret = validate_data(data)
 
-        if not ret is True:
+        if ret:
             return ret
 
-        self.log.debug("Adding {} with the following data: {}".format(self.__name__, pformat(data)))
-        return self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['user_name'], data)
+        payload = {}
+        payload["attrs"] = data["attrs"]
+
+        self.log.debug("Adding {} with the following data: {}".format(self.__class__, pformat(data)))
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + data['name'], data)
 
 
     def delete(self, name=None):
         """
-        Delete a User based on the user_name
+        Delete a Servicegroups based on the name
 
         :param name: name of the Servicegroup that is to be deleted
         """
-        if not hostname:
+        if not name:
             raise ValueError("name not set")
         else:
-            self.log.debug("Deleting {} with name: {}".format(self.__name__, hostname))
-            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
+            self.log.debug("Deleting {} with name: {}".format(self.__class__, name))
+            return self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + name)
 
     def list(self, name=None):
         """
-        Method to list all users or only a select one
-        Returns a list of all Users
+        Method to list all Servicegroups or only a select one
 
-        :param name: can be used to only list one Usergroup, if not set it will retrieve all Servicegroups
+        :param name: can be used to only list one Servicegroups, if not set it will retrieve all Servicegroups
         """
         if name is not None:
-            usergroup_filter = {
-                "attrs": ["__name"],
-                "filter": "user.__name == name",
+            group_filter = {
+                "attrs": ["name"],
+                "filter": "name == name",
                 "filter_vars": {
                     "name": name
                 }
             }
         else:
-            usergroup_filter = {
+            group_filter = {
                 "attrs": ["name"]
             }
 
-        self.log.debug("Listing all {} that match: {}".format(pformat(self.__name__, usergroup_filter)))
-        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], usergroup_filter)
+        self.log.debug("Listing all {} that match: {}".format(self.__class__, pformat(group_filter)))
+        ret = self.client.post_Data(self.client.URLCHOICES[self.filter], group_filter)
 
         return_list = []
 
@@ -105,11 +107,11 @@ class Servicegroups():
 
     def exists(self, name=None):
         """
-        Method to check if a single User exists
+        Method to check if a single Servicegroup exists
 
         :param name: Is needed to check if the User exists, will throw a Value Exception when not set
         """
-        if hostname:
+        if name:
             result = self.list(name=name)
 
             if not result:
@@ -121,7 +123,7 @@ class Servicegroups():
 
     def objects(self, attrs=None, _filter=None, joins=None):
         """
-        returns Usergroup objects that fit the filter and joins
+        returns Servicegroup objects that fit the filter and joins
 
         :attrs List: List of Attributes that are returned
         :_filter List: List of filters to be applied
