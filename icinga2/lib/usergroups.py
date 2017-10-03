@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Usergroups():
     """
     Class that contains all informations about Usergroups and corresponding funtions
@@ -21,6 +23,7 @@ class Usergroups():
         """
         Adding a Usergroup with a given set of Attributes and/or Templates
 
+        :rtype:
         :param data: Provides the needed variables to create a user.
         Example:
         data = {

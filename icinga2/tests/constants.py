@@ -12,3 +12,14 @@ class constants():
             "vars.os": "Linux"
         }
     }
+
+    TestService_name = "TestService"
+
+    TestService_data = {
+        "templates": ["generic-service"],
+        "attrs": {
+            "check_command": "ping4",
+            "check_interval": 10,
+            "retry_interval": 30
+        }
+    }

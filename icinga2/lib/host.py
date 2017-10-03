@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Hosts():
     """
     Class that contains all informations about Hosts and corresponding funtions
@@ -27,6 +29,7 @@ class Hosts():
         """
         Adding a Host with a given set of Attributes and/or Templates
 
+        :rtype:
         :param data: Provides the needed variables to create a host.
         Example:
         data = {
@@ -54,10 +57,8 @@ class Hosts():
 
         name = data['attrs'].pop("name")
 
-
         self.log.debug("Adding host with the following data: {}".format(pformat(data)))
         return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + name, data)
-
 
     def delete(self, name=None):
         """
@@ -101,7 +102,6 @@ class Hosts():
 
         self.log.debug("Finished list of all matches: {}".format(pformat(return_list)))
         return return_list
-
 
     def exists(self, name=None):
         """
@@ -176,7 +176,8 @@ class Hosts():
         host_data = self.objects()
 
         for data in host_data:
-            if data['attrs']['downtime_depth'] == 0 and data['attrs']['acknowledgement'] == 0 and data['attrs']['state'] != 0:
+            if data['attrs']['downtime_depth'] == 0 and data['attrs']['acknowledgement'] == 0 and data['attrs'][
+                'state'] != 0:
                 self.log.debug("Found match for Host: {}".format(pformat(data['name'])))
                 count += 1
 

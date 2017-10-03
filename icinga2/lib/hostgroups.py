@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Hostgroups():
     """
     Class that contains all informations about Hostgroups and corresponding funtions
@@ -21,6 +23,7 @@ class Hostgroups():
         """
         Adding a Usergroup with a given set of Attributes and/or Templates
 
+        :rtype:
         :param data: Provides the needed variables to create a Servicegroup.
         Example:
         data = {
