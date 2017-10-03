@@ -29,7 +29,7 @@ class Hosts():
         """
         Adding a Host with a given set of Attributes and/or Templates
 
-        :rtype:
+        :rtype dict:
         :param data: Provides the needed variables to create a host.
         Example:
         data = {
@@ -194,7 +194,7 @@ class Hosts():
 
         for host in host_data:
             if host['attrs']['state'] != 0:
-                host_problems[host['name']] = self.host_severity(host['attrs'])
+                host_problems[host['name']] = self.severity(host['attrs'])
                 self.log.debug("Calculated Severity for {} is {}".format(host['name'], host_problems[host['name']]))
 
         if len(host_problems) != 0:
@@ -212,7 +212,7 @@ class Hosts():
             from datetime import datetime, timedelta
 
             last_check_time = datetime.fromtimestamp(last_check_time)
-            now = datetime.now
+            now = datetime.now()
 
             if now > last_check_time + timedelta(seconds=20):
                 return False
@@ -230,7 +230,7 @@ class Hosts():
         else:
             severity += 4
 
-        check_status = last_check()
+        check_status = last_check(attrs['last_check'])
 
         if check_status:
             severity += 16
