@@ -35,7 +35,7 @@ class Users():
         }
         """
 
-        def validate_userdata(data):
+        def validate_data(data):
             """
             Returns an empty list, if everything checks out
             """
@@ -57,7 +57,7 @@ class Users():
             return ret
 
         self.log.debug("Adding user with the following data: {}".format(pformat(data)))
-        return self.client.put_Data(self.client.URLCHOICES[self.filter] + data['attrs']['user_name'], data)
+        return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + data['attrs']['user_name'], data)
 
 
     def delete(self, name=None):
@@ -70,7 +70,7 @@ class Users():
             raise ValueError("name not set")
         else:
             self.log.debug("Deleting User with name: {}".format(name))
-            self.client.delete_Data(self.client.URLCHOICES[self.filter] + name)
+            self.client.delete_Data(self.client.URLCHOICES[self.filter] + "/" + name)
 
     def list(self, name=None):
         """
@@ -110,7 +110,7 @@ class Users():
 
         :param name: Is needed to check if the User exists, will throw a Value Exception when not set
         """
-        if hostname:
+        if name:
             result = self.list(name=name)
 
             if not result:
