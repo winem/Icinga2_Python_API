@@ -11,7 +11,9 @@ def read(fname):
 setup(
   name = 'icinga2',
   packages = ['icinga2'], # this must be the same as the name above
-  version = '0.3',
+  package_data={'icinga2':['*/*', '*']},
+  include_package_data=True,
+  version = '0.4',
   description = 'An enhanced API to communicate with Icinga2',
   author = 'Kevin Honka',
   author_email = 'kevin.honka@astosch.de',
