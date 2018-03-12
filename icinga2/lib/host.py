@@ -1,5 +1,7 @@
-from pprint import pformat
 import logging
+from pprint import pformat
+
+
 class Hosts():
     """
     Class that contains all informations about Hosts and corresponding funtions
@@ -27,6 +29,7 @@ class Hosts():
         """
         Adding a Host with a given set of Attributes and/or Templates
 
+        :rtype dict:
         :param data: Provides the needed variables to create a host.
         Example:
         data = {
@@ -54,10 +57,8 @@ class Hosts():
 
         name = data['attrs'].pop("name")
 
-
         self.log.debug("Adding host with the following data: {}".format(pformat(data)))
         return self.client.put_Data(self.client.URLCHOICES[self.filter] + "/" + name, data)
-
 
     def delete(self, name=None):
         """
@@ -101,7 +102,6 @@ class Hosts():
 
         self.log.debug("Finished list of all matches: {}".format(pformat(return_list)))
         return return_list
-
 
     def exists(self, name=None):
         """
@@ -176,7 +176,8 @@ class Hosts():
         host_data = self.objects()
 
         for data in host_data:
-            if data['attrs']['downtime_depth'] == 0 and data['attrs']['acknowledgement'] == 0 and data['attrs']['state'] != 0:
+            if data['attrs']['downtime_depth'] == 0 and data['attrs']['acknowledgement'] == 0 and data['attrs'][
+                'state'] != 0:
                 self.log.debug("Found match for Host: {}".format(pformat(data['name'])))
                 count += 1
 
@@ -193,7 +194,7 @@ class Hosts():
 
         for host in host_data:
             if host['attrs']['state'] != 0:
-                host_problems[host['name']] = self.host_severity(host['attrs'])
+                host_problems[host['name']] = self.severity(host['attrs'])
                 self.log.debug("Calculated Severity for {} is {}".format(host['name'], host_problems[host['name']]))
 
         if len(host_problems) != 0:
@@ -211,7 +212,7 @@ class Hosts():
             from datetime import datetime, timedelta
 
             last_check_time = datetime.fromtimestamp(last_check_time)
-            now = datetime.now
+            now = datetime.now()
 
             if now > last_check_time + timedelta(seconds=20):
                 return False
@@ -229,7 +230,7 @@ class Hosts():
         else:
             severity += 4
 
-        check_status = last_check()
+        check_status = last_check(attrs['last_check'])
 
         if check_status:
             severity += 16

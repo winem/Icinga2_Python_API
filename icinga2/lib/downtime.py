@@ -1,4 +1,3 @@
-from . import client
 class Downtime():
     """
     Class that contains all informations about downtimes and corresponding funtions
@@ -17,6 +16,7 @@ class Downtime():
     def add(self, userdata=None):
         """
         To be filled
+        :rtype:
         """
         pass
 

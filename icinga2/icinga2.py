@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import logging
 import sys
-from pprint import pprint
 
 from icinga2.lib import client, downtime, host, hostgroups, notifications, service, servicegroups, usergroups, users
 
@@ -35,8 +34,3 @@ class Icinga2API(object):
         self.servicegroups = servicegroups.Servicegroups(client=self.client)
         self.usergroups = usergroups.Usergroups(client=self.client)
         self.users = users.Users(client=self.client)
-
-
-if __name__ == '__main__':
-    api = Icinga2API(username="root", password="icinga2", url="https://localhost:5665", debug=True)
-    pprint(api.hosts.problem_count())
